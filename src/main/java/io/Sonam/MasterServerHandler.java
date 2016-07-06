@@ -23,7 +23,7 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
         String finalData = dataBuilder.toString().trim();
         System.out.println("COMMAND > " + command + " > DATA > " + finalData);
         for(Channel ch : channels) {
-            ch.writeAndFlush("SC " + finalData);
+            ch.writeAndFlush("[MCP] BITCH I AM WORKING");
         }
     }
 
