@@ -35,13 +35,13 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("Added Channel > " + channels.size());
         channels.add(ctx.channel());
+        System.out.println("Added Channel > " + channels.size());
     }
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("Removed Channel > " + channels.size());
         channels.remove(ctx.channel());
+        System.out.println("Added Channel > " + channels.size());
     }
 }
