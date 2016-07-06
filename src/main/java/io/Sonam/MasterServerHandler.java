@@ -23,6 +23,7 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
         System.out.println("COMMAND > " + command + " > DATA > " + finalData);
         for(Channel ch : channels) {
             if(command.equalsIgnoreCase("STAFF_CHAT")) {
+                System.out.println("STAFF CHAT RECIEVED AND SENT");
                 ch.writeAndFlush("SC " + finalData);
             }
         }
