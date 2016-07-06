@@ -16,5 +16,13 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>target</id>
+            <build>
+                <directory>/home/Sonam/Net1/MCP</directory>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
