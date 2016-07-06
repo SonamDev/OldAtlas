@@ -32,7 +32,9 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <archive>
-                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                        <manifest>
+                            <mainClass>io.Sonam.MasterServer</mainClass>
+                        </manifest>
                     </archive>
                 </configuration>
             </plugin>
