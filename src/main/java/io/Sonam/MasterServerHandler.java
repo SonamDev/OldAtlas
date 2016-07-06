@@ -1,6 +1,5 @@
 package io.Sonam;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -22,10 +21,8 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
         }
         String finalData = dataBuilder.toString().trim();
         System.out.println("COMMAND > " + command + " > DATA > " + finalData);
-        for(Channel ch : channels) {
-            String asdasd = "SC " + finalData;
-            ch.writeAndFlush(asdasd.getBytes());
-        }
+        String asdasd = "SC " + finalData;
+        channels.writeAndFlush(asdasd.getBytes());
     }
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
