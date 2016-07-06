@@ -9,6 +9,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.util.HashMap;
 
+@SuppressWarnings("ALL")
 public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
 
     private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -32,13 +33,23 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
         if(command.equalsIgnoreCase("PROXY_REG")) {
             bungee_getter.put(finalData, channel);
             bungees.add(channel);
-            System.out.println("Registered Bungees " + finalData + " : Bungees Connected = " + bungee_getter.size());
+            System.out.println("Registered Bungee " + finalData + " : Bungees Connected = " + bungee_getter.size());
             return;
         }
         if(command.equalsIgnoreCase("INS_REG")) {
             instance_getter.put(finalData, channel);
             instances.add(channel);
             System.out.println("Registered Instance " + finalData + " : Instances Connected = " + instance_getter.size());
+            return;
+        }
+        if(command.equalsIgnoreCase("PROXY_UNREG")) {
+            System.out.println("Unregistered Bungee " + bungee_getter.get(ctx.channel()));
+            bungee_getter.values().remove(ctx.channel());
+            return;
+        }
+        if(command.equalsIgnoreCase("INS_UNREG")) {
+            System.out.println("Unregistered Instance " + instance_getter.get(ctx.channel()));
+            bungee_getter.values().remove(ctx.channel());
             return;
         }
         String asdasd = "SC " + finalData;
