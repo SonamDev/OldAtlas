@@ -11,6 +11,7 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
 
     final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
+    @Override
     public void channelRead0(ChannelHandlerContext ctx, byte[] bytes) throws Exception {
         System.out.println(new String(bytes));
         String MCP_COMMAND = new String(bytes); String[] CMD = MCP_COMMAND.split(" ");
@@ -36,4 +37,8 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
         channels.add(ctx.channel());
     }
 
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+        channels.remove(ctx.channel());
+    }
 }
