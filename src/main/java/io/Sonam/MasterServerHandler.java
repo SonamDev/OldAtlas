@@ -1,18 +1,26 @@
 package io.Sonam;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
+import java.util.HashMap;
+
 public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
 
     private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    private static final ChannelGroup bungees = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    private static final ChannelGroup instances = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    private static final HashMap<String, Channel> bungee_getter = new HashMap<String, Channel>();
+    private static final HashMap<String, Channel> instance_getter = new HashMap<String, Channel>();
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, byte[] bytes) throws Exception {
         System.out.println(new String(bytes));
+        Channel channel = ctx.channel();
         String MCP_COMMAND = new String(bytes); String[] CMD = MCP_COMMAND.split(" ");
         String command = CMD[1];
         StringBuilder dataBuilder = new StringBuilder();
@@ -21,6 +29,18 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
         }
         String finalData = dataBuilder.toString().trim();
         System.out.println("COMMAND > " + command + " > DATA > " + finalData);
+        if(command.equalsIgnoreCase("PROXY_REG")) {
+            bungee_getter.put(finalData, channel);
+            bungees.add(channel);
+            System.out.println("Registered Bungees " + finalData + " : Bungees Connected = " + bungee_getter.size());
+            return;
+        }
+        if(command.equalsIgnoreCase("INS_REG")) {
+            instance_getter.put(finalData, channel);
+            instances.add(channel);
+            System.out.println("Registered Instance " + finalData + " : Instances Connected = " + instance_getter.size());
+            return;
+        }
         String asdasd = "SC " + finalData;
         channels.writeAndFlush(asdasd.getBytes());
     }
