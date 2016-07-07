@@ -23,6 +23,10 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
+
+    }
+
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("Got Data.");
         byte[] buf = (byte[]) msg;
         String jsonPayload = new String(buf);
@@ -67,10 +71,6 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<Object> {
         }
         String asdasd = "SC " + finalData;
         channels.writeAndFlush(asdasd.getBytes());
-    }
-
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("Got Data (read1).");
     }
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
