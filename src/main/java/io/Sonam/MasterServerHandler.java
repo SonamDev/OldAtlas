@@ -22,6 +22,7 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("Got Data.");
         JSONObject object = (JSONObject) msg;
         Channel channel = ctx.channel();
         String command = object.get("command").toString();
@@ -61,6 +62,11 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<Object> {
         }
         String asdasd = "SC " + finalData;
         channels.writeAndFlush(asdasd.getBytes());
+    }
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("Got Data (read1).");
     }
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
