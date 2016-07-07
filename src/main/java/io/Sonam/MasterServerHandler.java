@@ -10,7 +10,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("ALL")
 public class MasterServerHandler extends SimpleChannelInboundHandler<Object> {
@@ -62,11 +61,7 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<Object> {
         if(command.equalsIgnoreCase("PROFILE")) {
             final Object copy = msg;
             System.out.println(instance_getter);
-            ctx.channel().eventLoop().schedule(new Runnable() {
-                public void run() {
-                    instance_getter.get(finalData.get("instance").toString()).writeAndFlush(copy);
-                }
-            }, 24, TimeUnit.MILLISECONDS);
+            instance_getter.get(finalData.get("instance").toString()).writeAndFlush(copy);
             return;
         }
         String asdasd = "SC " + finalData;
