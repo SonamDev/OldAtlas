@@ -14,6 +14,16 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.2.Final</version>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -52,6 +62,8 @@
                             <artifactSet>
                                 <includes>
                                     <include>io.netty:*</include>
+                                    <include>junit:*</include>
+                                    <include>>com.googlecode.json-simple:*</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

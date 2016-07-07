@@ -6,12 +6,13 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("ALL")
-public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
+public class MasterServerHandler extends SimpleChannelInboundHandler<Object> {
 
     private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     private static final ChannelGroup bungees = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -20,25 +21,20 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
     private static final HashMap<String, Channel> instance_getter = new HashMap<String, Channel>();
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, byte[] bytes) throws Exception {
-        System.out.println(new String(bytes));
+    public void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
+        JSONObject object = (JSONObject) msg;
         Channel channel = ctx.channel();
-        final String MCP_COMMAND = new String(bytes); final String[] CMD = MCP_COMMAND.split(" ");
-        String command = CMD[1];
-        StringBuilder dataBuilder = new StringBuilder();
-        for(int i = 2; i < CMD.length; i++) {
-            dataBuilder.append(CMD[i]).append(" ");
-        }
-        String finalData = dataBuilder.toString().trim();
+        String command = object.get("command").toString();
+        final JSONObject finalData = (JSONObject) object.get("data");
         System.out.println("COMMAND > " + command + " > DATA > " + finalData);
         if(command.equalsIgnoreCase("PROXY_REG")) {
-            bungee_getter.put(finalData, channel);
+            bungee_getter.put(finalData.get("instance").toString(), channel);
             bungees.add(channel);
             System.out.println("Registered Bungee " + finalData + " : Bungees Connected = " + bungee_getter.size());
             return;
         }
         if(command.equalsIgnoreCase("INS_REG")) {
-            instance_getter.put(finalData, channel);
+            instance_getter.put(finalData.get("instance").toString(), channel);
             instances.add(channel);
             System.out.println("Registered Instance " + finalData + " : Instances Connected = " + instance_getter.size());
             return;
@@ -54,10 +50,11 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
             return;
         }
         if(command.equalsIgnoreCase("PROFILE")) {
+            final Object copy = msg;
             System.out.println(instance_getter);
             ctx.channel().eventLoop().schedule(new Runnable() {
                 public void run() {
-                    instance_getter.get(CMD[2]).writeAndFlush(MCP_COMMAND.getBytes());
+                    instance_getter.get(finalData.get("instance").toString()).writeAndFlush(copy);
                 }
             }, 24, TimeUnit.MILLISECONDS);
             return;
