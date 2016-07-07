@@ -8,6 +8,7 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("ALL")
 public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
@@ -22,7 +23,7 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
     public void channelRead0(ChannelHandlerContext ctx, byte[] bytes) throws Exception {
         System.out.println(new String(bytes));
         Channel channel = ctx.channel();
-        String MCP_COMMAND = new String(bytes); String[] CMD = MCP_COMMAND.split(" ");
+        final String MCP_COMMAND = new String(bytes); final String[] CMD = MCP_COMMAND.split(" ");
         String command = CMD[1];
         StringBuilder dataBuilder = new StringBuilder();
         for(int i = 2; i < CMD.length; i++) {
@@ -54,7 +55,11 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
         }
         if(command.equalsIgnoreCase("PROFILE")) {
             System.out.println(instance_getter);
-            instance_getter.get(CMD[2]).writeAndFlush(MCP_COMMAND.getBytes());
+            ctx.channel().eventLoop().schedule(new Runnable() {
+                public void run() {
+                    instance_getter.get(CMD[2]).writeAndFlush(MCP_COMMAND.getBytes());
+                }
+            }, 24, TimeUnit.MILLISECONDS);
             return;
         }
         String asdasd = "SC " + finalData;
