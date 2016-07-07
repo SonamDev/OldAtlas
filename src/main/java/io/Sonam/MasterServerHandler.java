@@ -52,6 +52,11 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
             bungee_getter.values().remove(ctx.channel());
             return;
         }
+        if(command.equalsIgnoreCase("PROFILE")) {
+            System.out.println(instance_getter);
+            instance_getter.get(CMD[2]).writeAndFlush(MCP_COMMAND.getBytes());
+            return;
+        }
         String asdasd = "SC " + finalData;
         channels.writeAndFlush(asdasd.getBytes());
     }
