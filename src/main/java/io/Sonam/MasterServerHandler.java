@@ -40,13 +40,13 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<Object> {
         if(command.equalsIgnoreCase("PROXY_REG")) {
             bungee_getter.put(finalData.get("instance").toString(), channel);
             bungees.add(channel);
-            System.out.println("Registered Bungee " + finalData + " : Bungees Connected = " + bungee_getter.size());
+            System.out.println("Registered Bungee " + finalData.get("instance") + " : Bungees Connected = " + bungee_getter.size());
             return;
         }
         if(command.equalsIgnoreCase("INS_REG")) {
             instance_getter.put(finalData.get("instance").toString(), channel);
             instances.add(channel);
-            System.out.println("Registered Instance " + finalData + " : Instances Connected = " + instance_getter.size());
+            System.out.println("Registered Instance " + finalData.get("instance") + " : Instances Connected = " + instance_getter.size());
             return;
         }
         if(command.equalsIgnoreCase("PROXY_UNREG")) {
