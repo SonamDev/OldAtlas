@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("ALL")
-public class MasterServerHandler extends SimpleChannelInboundHandler<Object> {
+public class MasterServerHandler extends SimpleChannelInboundHandler<JSONObject> {
 
     private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     private static final ChannelGroup bungees = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -21,7 +21,7 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<Object> {
     private static final HashMap<String, Channel> instance_getter = new HashMap<String, Channel>();
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead0(ChannelHandlerContext ctx, JSONObject msg) throws Exception {
         System.out.println("Got Data.");
         JSONObject object = (JSONObject) msg;
         Channel channel = ctx.channel();
@@ -64,8 +64,7 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<Object> {
         channels.writeAndFlush(asdasd.getBytes());
     }
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, JSONObject msg) throws Exception {
         System.out.println("Got Data (read1).");
     }
 
