@@ -1,5 +1,6 @@
 package io.Sonam;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -7,12 +8,13 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("ALL")
-public class MasterServerHandler extends SimpleChannelInboundHandler<JSONObject> {
+public class MasterServerHandler extends SimpleChannelInboundHandler<Object> {
 
     private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     private static final ChannelGroup bungees = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -21,9 +23,13 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<JSONObject>
     private static final HashMap<String, Channel> instance_getter = new HashMap<String, Channel>();
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, JSONObject msg) throws Exception {
+    public void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("Got Data.");
-        JSONObject object = (JSONObject) msg;
+        ByteBuf buf = (ByteBuf) msg;
+        String jsonPayload = buf.toString();
+        System.out.println(jsonPayload);
+        JSONParser parser = new JSONParser();
+        JSONObject object = (JSONObject) parser.parse(jsonPayload);
         Channel channel = ctx.channel();
         String command = object.get("command").toString();
         final JSONObject finalData = (JSONObject) object.get("data");
@@ -64,7 +70,7 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<JSONObject>
         channels.writeAndFlush(asdasd.getBytes());
     }
 
-    public void channelRead(ChannelHandlerContext ctx, JSONObject msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("Got Data (read1).");
     }
 
