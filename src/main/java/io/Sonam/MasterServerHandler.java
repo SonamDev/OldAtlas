@@ -1,6 +1,5 @@
 package io.Sonam;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -25,8 +24,8 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("Got Data.");
-        ByteBuf buf = (ByteBuf) msg;
-        String jsonPayload = buf.toString();
+        byte[] buf = (byte[]) msg;
+        String jsonPayload = new String(buf);
         System.out.println(jsonPayload);
         JSONParser parser = new JSONParser();
         JSONObject object = (JSONObject) parser.parse(jsonPayload);
