@@ -1,19 +1,17 @@
 package io.Sonam;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
-import io.netty.util.CharsetUtil;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
 @SuppressWarnings("all")
-public class MasterServerHandler extends ChannelInboundHandlerAdapter {
+public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
 
     private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     private static final ChannelGroup bungees = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -22,9 +20,8 @@ public class MasterServerHandler extends ChannelInboundHandlerAdapter {
     private static final HashMap<String, Channel> instance_getter = new HashMap<String, Channel>();
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf buf = (ByteBuf) msg;
-        String jsonPayload = buf.toString(CharsetUtil.UTF_8);
+    public void channelRead0(ChannelHandlerContext ctx, byte[] msg) throws Exception {
+        String jsonPayload = new String(msg);
         System.out.println("[ByteBuf] " + jsonPayload);
         JSONObject object = new JSONObject(jsonPayload);
         Channel channel = ctx.channel();
@@ -57,8 +54,7 @@ public class MasterServerHandler extends ChannelInboundHandlerAdapter {
         if(command.equalsIgnoreCase("PROFILE")) {
             System.out.println(instance_getter);
             byte[] array = jsonPayload.getBytes();
-            Channel chn = instance_getter.get(finalData.getString("instance"));
-            chn.writeAndFlush(array);
+            instance_getter.get(finalData.getString("instance")).writeAndFlush(array);
             return;
         }
     }
