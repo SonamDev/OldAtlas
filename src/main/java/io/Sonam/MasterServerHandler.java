@@ -55,9 +55,10 @@ public class MasterServerHandler extends ChannelInboundHandlerAdapter {
             return;
         }
         if(command.equalsIgnoreCase("PROFILE")) {
-            final ByteBuf unpooledBuf = Unpooled.copiedBuffer(buf);
             System.out.println(instance_getter);
-            instance_getter.get(finalData.getString("instance")).writeAndFlush(unpooledBuf);
+            String finalPayload = finalData.toString();
+            ByteBuf buf2 = Unpooled.copiedBuffer(finalPayload, CharsetUtil.UTF_8);
+            instance_getter.get(finalData.getString("instance")).writeAndFlush(buf2);
             return;
         }
     }
