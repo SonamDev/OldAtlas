@@ -57,7 +57,7 @@ public class MasterServerHandler extends ChannelInboundHandlerAdapter {
         if(command.equalsIgnoreCase("PROFILE")) {
             System.out.println(instance_getter);
             ByteBuf buf2 = buf.copy();
-            Channel chn = instance_getter.get(object.getString("instance"));
+            Channel chn = instance_getter.get(finalData.getString("instance"));
             chn.write(buf2);
             chn.flush();
             return;
