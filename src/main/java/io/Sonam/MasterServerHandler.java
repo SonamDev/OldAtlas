@@ -60,6 +60,11 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
     }
 
     @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("ChannelRead 1 <");
+    }
+
+    @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
         ctx.close();
