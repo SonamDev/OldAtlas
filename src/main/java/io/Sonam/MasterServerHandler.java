@@ -28,6 +28,7 @@ public class MasterServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println("[ByteBuf] " + jsonPayload);
         JSONObject object = new JSONObject(jsonPayload);
         Channel channel = ctx.channel();
+        channel.flush();
         String command = object.getString("command");
         final JSONObject finalData = object.getJSONObject("data");
         System.out.println("COMMAND > " + command + " > DATA > " + finalData);
@@ -55,9 +56,10 @@ public class MasterServerHandler extends ChannelInboundHandlerAdapter {
         }
         if(command.equalsIgnoreCase("PROFILE")) {
             System.out.println(instance_getter);
-            String finalPayload = finalData.toString();
             ByteBuf buf2 = buf.copy();
-            instance_getter.get(finalData.getString("instance")).writeAndFlush(buf2);
+            Channel chn = instance_getter.get(object.getString("instance"));
+            chn.write(buf2);
+            chn.flush();
             return;
         }
     }
