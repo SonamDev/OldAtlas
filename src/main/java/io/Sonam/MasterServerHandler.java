@@ -21,7 +21,12 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, byte[] msg) throws Exception {
-        String jsonPayload = new String(msg);
+
+    }
+
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        byte[] msgg = (byte[]) msg;
+        String jsonPayload = new String(msgg);
         System.out.println("[ByteBuf] " + jsonPayload);
         JSONObject object = new JSONObject(jsonPayload);
         Channel channel = ctx.channel();
@@ -57,11 +62,6 @@ public class MasterServerHandler extends SimpleChannelInboundHandler<byte[]> {
             instance_getter.get(finalData.getString("instance")).writeAndFlush(array);
             return;
         }
-    }
-
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("ChannelRead 1 <");
     }
 
     @Override
