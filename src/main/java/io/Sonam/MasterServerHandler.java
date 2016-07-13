@@ -1,7 +1,6 @@
 package io.Sonam;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -57,7 +56,7 @@ public class MasterServerHandler extends ChannelInboundHandlerAdapter {
         if(command.equalsIgnoreCase("PROFILE")) {
             System.out.println(instance_getter);
             String finalPayload = finalData.toString();
-            ByteBuf buf2 = Unpooled.copiedBuffer(finalPayload, CharsetUtil.UTF_8);
+            ByteBuf buf2 = buf.copy();
             instance_getter.get(finalData.getString("instance")).writeAndFlush(buf2);
             return;
         }
