@@ -58,9 +58,13 @@ public class MasterServerHandler extends ChannelInboundHandlerAdapter {
         }
         if(command.equalsIgnoreCase("PROFILE")) {
             System.out.println(instance_getter);
-            ByteBuf byteBuf = Unpooled.copiedBuffer(jsonPayload, CharsetUtil.UTF_8);
+            final ByteBuf byteBuf = Unpooled.copiedBuffer(jsonPayload, CharsetUtil.UTF_8);
             byteBuf.capacity(2048);
-            instance_getter.get(finalData.getString("instance")).writeAndFlush(byteBuf).await(450, TimeUnit.MILLISECONDS);
+            ctx.channel().eventLoop().schedule(new Runnable() {
+                public void run() {
+                    instance_getter.get(finalData.getString("instance")).writeAndFlush(byteBuf);
+                }
+            }, 100L, TimeUnit.MILLISECONDS);
             return;
         }
     }
