@@ -12,6 +12,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("all")
 public class MasterServerHandler extends ChannelInboundHandlerAdapter {
@@ -58,8 +59,8 @@ public class MasterServerHandler extends ChannelInboundHandlerAdapter {
         if(command.equalsIgnoreCase("PROFILE")) {
             System.out.println(instance_getter);
             ByteBuf byteBuf = Unpooled.copiedBuffer(jsonPayload, CharsetUtil.UTF_8);
-            byteBuf.capacity(1024);
-            instance_getter.get(finalData.getString("instance")).writeAndFlush(byteBuf);
+            byteBuf.capacity(2048);
+            instance_getter.get(finalData.getString("instance")).writeAndFlush(byteBuf).await(450, TimeUnit.MILLISECONDS);
             return;
         }
     }
