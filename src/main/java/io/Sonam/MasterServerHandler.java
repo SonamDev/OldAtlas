@@ -3,8 +3,8 @@ package io.Sonam;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.CharsetUtil;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("all")
-public class MasterServerHandler extends ChannelInboundHandlerAdapter {
+public class MasterServerHandler extends ChannelHandlerAdapter {
 
     private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     private static final ChannelGroup bungees = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -79,7 +79,6 @@ public class MasterServerHandler extends ChannelInboundHandlerAdapter {
         channels.add(ctx.channel());
     }
 
-    @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
         System.out.println("[ByteBuf] Channel Removed");
         channels.remove(ctx.channel());
