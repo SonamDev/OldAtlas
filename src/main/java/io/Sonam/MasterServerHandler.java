@@ -27,13 +27,11 @@ public class MasterServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf buf = (ByteBuf) msg;
         String jsonPayload = buf.toString(CharsetUtil.UTF_8);
-        System.out.println("[ByteBuf] " + jsonPayload);
         JSONObject object = new JSONObject(jsonPayload);
         Channel channel = ctx.channel();
         channel.flush();
         String command = object.getString("command");
         final JSONObject finalData = object.getJSONObject("data");
-        System.out.println("COMMAND > " + command + " > DATA > " + finalData);
         if(command.equalsIgnoreCase("PROXY_REG")) {
             bungee_getter.put(finalData.getString("instance"), channel);
             bungees.add(channel);
@@ -59,7 +57,7 @@ public class MasterServerHandler extends ChannelInboundHandlerAdapter {
         if(command.equalsIgnoreCase("PROFILE")) {
             System.out.println(instance_getter);
             final ByteBuf byteBuf = Unpooled.copiedBuffer(jsonPayload, CharsetUtil.UTF_8);
-            byteBuf.capacity(2048);
+            byteBuf.capacity(1024);
             ctx.channel().eventLoop().schedule(new Runnable() {
                 public void run() {
                     instance_getter.get(finalData.getString("instance")).writeAndFlush(byteBuf);
