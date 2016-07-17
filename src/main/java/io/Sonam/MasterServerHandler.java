@@ -52,12 +52,14 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
             System.out.println("[ByteBuf] Unregistered Bungee " + bungee_getter.get(ctx.channel()));
             bungee_getter.values().remove(ctx.channel());
             MasterServer.bungees--;
+            MasterServer.getSocketIO().getSocket().emit("setBungees", MasterServer.instances);
             return;
         }
         if(command.equalsIgnoreCase("INS_UNREG")) {
             System.out.println("[ByteBuf] Unregistered Instance " + instance_getter.get(ctx.channel()));
             bungee_getter.values().remove(ctx.channel());
             MasterServer.instances--;
+            MasterServer.getSocketIO().getSocket().emit("setInstances", MasterServer.instances);
             return;
         }
         if(command.equalsIgnoreCase("PROFILE")) {
