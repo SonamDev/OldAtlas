@@ -73,6 +73,11 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
             }, 100L, TimeUnit.MILLISECONDS);
             return;
         }
+        if(command.equalsIgnoreCase("INS_STATUS")) {
+            System.out.println("STATUS : " + finalData.getString("instance") + " : " + finalData.getString("status"));
+            MasterServer.getSocketIO().getSocket().emit("status", finalData.toString());
+            return;
+        }
     }
 
     @Override

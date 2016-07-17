@@ -10,6 +10,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import redis.clients.jedis.Jedis;
 
 
 public class MasterServer {
@@ -18,6 +19,7 @@ public class MasterServer {
     private static Socket_IO socketIO;
     public static int bungees;
     public static int instances;
+    private static Jedis jedis;
 
 
     public static void main(String[] args) throws Exception {
@@ -32,6 +34,7 @@ public class MasterServer {
                 socket.emit("setBungees", bungees);
             }
         });
+        jedis = new Jedis();
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -64,4 +67,6 @@ public class MasterServer {
     static Socket_IO getSocketIO() {
         return socketIO;
     }
+
+    static Jedis getJedis() { return jedis; }
 }
