@@ -3,6 +3,7 @@ package io.Sonam;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.ChannelGroup;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("all")
+@ChannelHandler.Sharable
 public class MasterServerHandler extends ChannelHandlerAdapter {
 
     private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
