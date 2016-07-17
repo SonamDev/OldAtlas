@@ -49,14 +49,14 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
             return;
         }
         if(command.equalsIgnoreCase("PROXY_UNREG")) {
-            System.out.println("[ByteBuf] Unregistered Bungee " + bungee_getter.get(ctx.channel()));
+            System.out.println("[ByteBuf] Unregistered Bungee " + finalData.getString("instance"));
             bungee_getter.values().remove(ctx.channel());
             MasterServer.bungees--;
             MasterServer.getSocketIO().getSocket().emit("setBungees", MasterServer.bungees);
             return;
         }
         if(command.equalsIgnoreCase("INS_UNREG")) {
-            System.out.println("[ByteBuf] Unregistered Instance " + instance_getter.get(ctx.channel()));
+            System.out.println("[ByteBuf] Unregistered Instance " + finalData.getString("instance"));
             bungee_getter.values().remove(ctx.channel());
             MasterServer.instances--;
             MasterServer.getSocketIO().getSocket().emit("setInstances", MasterServer.instances);
