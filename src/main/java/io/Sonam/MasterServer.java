@@ -48,6 +48,11 @@ public class MasterServer {
                 MasterServerHandler.instance_getter.get(rec).writeAndFlush(buf);
             }
         });
+        socket.on("rebootMCP", new Emitter.Listener() {
+            public void call(Object... objects) {
+                System.exit(0);
+            }
+        });
         jedis = new Jedis();
         masterServerHandler = new MasterServerHandler();
         EventLoopGroup bossGroup = new NioEventLoopGroup();
