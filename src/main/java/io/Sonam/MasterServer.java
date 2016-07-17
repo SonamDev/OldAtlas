@@ -50,6 +50,7 @@ public class MasterServer {
         });
         socket.on("rebootMCP", new Emitter.Listener() {
             public void call(Object... objects) {
+                socket.disconnect();
                 System.exit(0);
             }
         });
