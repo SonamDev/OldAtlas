@@ -52,10 +52,10 @@ public class MasterServer {
             public void call(Object... objects) {
                 String rec = (String) objects[0];
                 System.out.println(rec);
-                JSONObject object = new JSONObject();
-                object.put("command", "STOP");
-                ByteBuf buf = Unpooled.copiedBuffer(object.toString(), CharsetUtil.UTF_8);
-                MasterServerHandler.bungee_getter.get(rec).writeAndFlush(buf);
+                JSONObject obj = new JSONObject();
+                obj.put("command", "STOP");
+                ByteBuf buff = Unpooled.copiedBuffer(obj.toString(), CharsetUtil.UTF_8);
+                MasterServerHandler.bungee_getter.get(rec).writeAndFlush(buff);
             }
         });
 

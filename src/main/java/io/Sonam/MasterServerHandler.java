@@ -31,7 +31,6 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
         String jsonPayload = buf.toString(CharsetUtil.UTF_8);
         JSONObject object = new JSONObject(jsonPayload);
         Channel channel = ctx.channel();
-        channel.flush();
         String command = object.getString("command");
         final JSONObject finalData = object.getJSONObject("data");
         if(command.equalsIgnoreCase("PROXY_REG")) {
