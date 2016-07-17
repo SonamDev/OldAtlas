@@ -81,6 +81,13 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
             MasterServer.getJedis().set("instances:" + finalData.getString("instance"), finalData.getString("status"));
             return;
         }
+        if(command.equalsIgnoreCase("PROXY_STATUS")) {
+            System.out.println("STATUS : " + finalData.getString("instance") + " : " + finalData.getString("status"));
+            MasterServer.getSocketIO().getSocket().emit("status", finalData.toString());
+            MasterServer.getJedis().set("instances:" + finalData.getString("instance"), finalData.getString("status"));
+            return;
+        }
+
     }
 
     @Override

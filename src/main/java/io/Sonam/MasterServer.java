@@ -48,6 +48,16 @@ public class MasterServer {
                 MasterServerHandler.instance_getter.get(rec).writeAndFlush(buf);
             }
         });
+        socket.on("stopProxy", new Emitter.Listener() {
+            public void call(Object... objects) {
+                String rec = (String) objects[0];
+                JSONObject object = new JSONObject();
+                object.put("command", "STOP");
+                ByteBuf buf = Unpooled.copiedBuffer(object.toString(), CharsetUtil.UTF_8);
+                MasterServerHandler.bungee_getter.get(rec).writeAndFlush(buf);
+            }
+        });
+
         socket.on("rebootMCP", new Emitter.Listener() {
             public void call(Object... objects) {
                 socket.disconnect();
