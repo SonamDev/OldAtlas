@@ -17,6 +17,7 @@ public class MasterServer {
 
     static final int PORT = 35566;
     private static Socket_IO socketIO;
+    private static MasterServerHandler masterServerHandler;
     public static int bungees;
     public static int instances;
     private static Jedis jedis;
@@ -35,6 +36,7 @@ public class MasterServer {
             }
         });
         jedis = new Jedis();
+        masterServerHandler = new MasterServerHandler();
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -51,7 +53,7 @@ public class MasterServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         public void initChannel(SocketChannel ch) {
                             ChannelPipeline p = ch.pipeline();
-                            p.addLast(new MasterServerHandler());
+                            p.addLast(masterServerHandler);
                         }
                     });
 

@@ -20,8 +20,8 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
     private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     private static final ChannelGroup bungees = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     private static final ChannelGroup instances = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-    private static final HashMap<String, Channel> bungee_getter = new HashMap<String, Channel>();
-    private static final HashMap<String, Channel> instance_getter = new HashMap<String, Channel>();
+    static final HashMap<String, Channel> bungee_getter = new HashMap<String, Channel>();
+    static final HashMap<String, Channel> instance_getter = new HashMap<String, Channel>();
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
