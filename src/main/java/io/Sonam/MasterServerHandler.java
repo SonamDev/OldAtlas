@@ -36,12 +36,14 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
             bungee_getter.put(finalData.getString("instance"), channel);
             bungees.add(channel);
             System.out.println("[ByteBuf] Registered Bungee " + finalData.getString("instance") + " : Bungees Connected = " + bungee_getter.size());
+            MasterServer.getSocketIO().getSocket().emit("registeredProxy", 1);
             return;
         }
         if(command.equalsIgnoreCase("INS_REG")) {
             instance_getter.put(finalData.getString("instance"), channel);
             instances.add(channel);
             System.out.println("[ByteBuf] Registered Instance " + finalData.get("instance") + " : Instances Connected = " + instance_getter.size());
+            MasterServer.getSocketIO().getSocket().emit("registeredIns", 1);
             return;
         }
         if(command.equalsIgnoreCase("PROXY_UNREG")) {

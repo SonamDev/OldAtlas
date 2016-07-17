@@ -24,6 +24,11 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
+        <dependency>
+            <groupId>io.socket</groupId>
+            <artifactId>socket.io-client</artifactId>
+            <version>0.7.0</version>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -64,6 +69,7 @@
                                     <include>io.netty:*</include>
                                     <include>junit:*</include>
                                     <include>org.json:*</include>
+                                    <include>io.socket:*</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
