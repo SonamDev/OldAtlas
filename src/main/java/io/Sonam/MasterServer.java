@@ -17,6 +17,15 @@ public class MasterServer {
     private static Socket_IO socketIO;
 
     public static void main(String[] args) throws Exception {
+        socketIO = new Socket_IO("http://localhost:3000");
+        final Socket socket = socketIO.getSocket();
+        socket.connect();
+        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+            public void call(Object... objects) {
+                System.out.println("Successfully Connected to WebSocket");
+                socket.emit("reset", "dummy");
+            }
+        });
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -40,22 +49,13 @@ public class MasterServer {
             ChannelFuture f = b.bind(PORT).sync();
 
             f.channel().closeFuture().sync();
-
-            socketIO = new Socket_IO("http://localhost:3000");
-            final Socket socket = socketIO.getSocket();
-            socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-                public void call(Object... objects) {
-                    System.out.println("Successfully Connected to WebSocket");
-                    socket.emit("reset", "dummy");
-                }
-            });
         } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
         }
     }
 
-    public static Socket_IO getSocketIO() {
+    static Socket_IO getSocketIO() {
         return socketIO;
     }
 }
