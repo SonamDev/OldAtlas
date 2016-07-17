@@ -29,7 +29,7 @@ public class MasterServer {
                 System.out.println("Successfully Connected to WebSocket");
                 socket.emit("reset", "dummy");
                 socket.emit("setInstances", instances);
-                socket.emit("setBungess", bungees);
+                socket.emit("setBungees", bungees);
             }
         });
         EventLoopGroup bossGroup = new NioEventLoopGroup();
