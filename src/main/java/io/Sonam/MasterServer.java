@@ -2,14 +2,18 @@ package io.Sonam;
 
 import io.Sonam.sio.Socket_IO;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.util.CharsetUtil;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import org.json.JSONObject;
 import redis.clients.jedis.Jedis;
 
 
@@ -33,6 +37,15 @@ public class MasterServer {
                 socket.emit("reset", "dummy");
                 socket.emit("setInstances", instances);
                 socket.emit("setBungees", bungees);
+            }
+        });
+        socket.on("stop", new Emitter.Listener() {
+            public void call(Object... objects) {
+                String rec = (String) objects[0];
+                JSONObject object = new JSONObject();
+                object.put("command", "STOP");
+                ByteBuf buf = Unpooled.copiedBuffer(object.toString(), CharsetUtil.UTF_8);
+                MasterServerHandler.instance_getter.get(rec).writeAndFlush(buf);
             }
         });
         jedis = new Jedis();
