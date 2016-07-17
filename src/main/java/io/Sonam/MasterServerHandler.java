@@ -78,6 +78,7 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
         if(command.equalsIgnoreCase("INS_STATUS")) {
             System.out.println("STATUS : " + finalData.getString("instance") + " : " + finalData.getString("status"));
             MasterServer.getSocketIO().getSocket().emit("status", finalData.toString());
+            MasterServer.getJedis().set("instances:" + finalData.getString("instance"), finalData.getString("status"));
             return;
         }
     }
