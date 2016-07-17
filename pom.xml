@@ -70,6 +70,8 @@
                                     <include>junit:*</include>
                                     <include>org.json:*</include>
                                     <include>io.socket:*</include>
+                                    <include>com.squareup.okhttp3:*</include>
+                                    <include>com.squareup.okio:*</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
