@@ -37,6 +37,7 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
             bungees.add(channel);
             System.out.println("[ByteBuf] Registered Bungee " + finalData.getString("instance") + " : Bungees Connected = " + bungee_getter.size());
             MasterServer.getSocketIO().getSocket().emit("registeredProxy", 1);
+            MasterServer.bungees++;
             return;
         }
         if(command.equalsIgnoreCase("INS_REG")) {
@@ -44,16 +45,19 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
             instances.add(channel);
             System.out.println("[ByteBuf] Registered Instance " + finalData.get("instance") + " : Instances Connected = " + instance_getter.size());
             MasterServer.getSocketIO().getSocket().emit("registeredIns", 1);
+            MasterServer.instances++;
             return;
         }
         if(command.equalsIgnoreCase("PROXY_UNREG")) {
             System.out.println("[ByteBuf] Unregistered Bungee " + bungee_getter.get(ctx.channel()));
             bungee_getter.values().remove(ctx.channel());
+            MasterServer.bungees--;
             return;
         }
         if(command.equalsIgnoreCase("INS_UNREG")) {
             System.out.println("[ByteBuf] Unregistered Instance " + instance_getter.get(ctx.channel()));
             bungee_getter.values().remove(ctx.channel());
+            MasterServer.instances--;
             return;
         }
         if(command.equalsIgnoreCase("PROFILE")) {

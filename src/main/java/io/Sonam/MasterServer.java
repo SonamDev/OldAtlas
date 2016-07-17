@@ -11,10 +11,14 @@ import io.netty.handler.logging.LoggingHandler;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
+
 public class MasterServer {
 
     static final int PORT = 35566;
     private static Socket_IO socketIO;
+    public static int bungees;
+    public static int instances;
+
 
     public static void main(String[] args) throws Exception {
         socketIO = new Socket_IO("http://localhost:3000");
@@ -24,6 +28,8 @@ public class MasterServer {
             public void call(Object... objects) {
                 System.out.println("Successfully Connected to WebSocket");
                 socket.emit("reset", "dummy");
+                socket.emit("setInstances", instances);
+                socket.emit("setBungess", bungees);
             }
         });
         EventLoopGroup bossGroup = new NioEventLoopGroup();
