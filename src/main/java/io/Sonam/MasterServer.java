@@ -51,6 +51,7 @@ public class MasterServer {
         socket.on("stopProxy", new Emitter.Listener() {
             public void call(Object... objects) {
                 String rec = (String) objects[0];
+                System.out.println(rec);
                 JSONObject object = new JSONObject();
                 object.put("command", "STOP");
                 ByteBuf buf = Unpooled.copiedBuffer(object.toString(), CharsetUtil.UTF_8);
