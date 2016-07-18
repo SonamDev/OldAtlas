@@ -42,7 +42,7 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
             JSONObject ijk = new JSONObject();
             ijk.put("instance", finalData.getString("instance"));
             ijk.put("status", "RUNNING");
-            MasterServer.getSocketIO().getSocket().emit("statusProxy", finalData.toString());
+            MasterServer.getSocketIO().getSocket().emit("statusProxy", ijk.toString());
             if(!bungee_getter.containsKey(finalData.getString("instance")))MasterServer.bungees++;
             return;
         }
@@ -63,7 +63,7 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
             JSONObject ijk = new JSONObject();
             ijk.put("instance", finalData.getString("instance"));
             ijk.put("status", "REBOOTING");
-            MasterServer.getSocketIO().getSocket().emit("statusProxy", finalData.toString());
+            MasterServer.getSocketIO().getSocket().emit("statusProxy", ijk.toString());
             return;
         }
         if(command.equalsIgnoreCase("INS_UNREG")) {
