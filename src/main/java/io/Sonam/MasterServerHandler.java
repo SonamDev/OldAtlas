@@ -38,7 +38,12 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
             bungees.add(channel);
             System.out.println("[ByteBuf] Registered Bungee " + finalData.getString("instance") + " : Bungees Connected = " + bungee_getter.size());
             MasterServer.getSocketIO().getSocket().emit("registeredProxy", 1);
-            MasterServer.bungees++;
+            MasterServer.getJedis().set("instances:" + finalData.getString("instance"), "RUNNING");
+            JSONObject ijk = new JSONObject();
+            ijk.put("instance", finalData.getString("instance"));
+            ijk.put("status", "RUNNING");
+            MasterServer.getSocketIO().getSocket().emit("statusProxy", finalData.toString());
+            if(!bungee_getter.containsKey(finalData.getString("instance")))MasterServer.bungees++;
             return;
         }
         if(command.equalsIgnoreCase("INS_REG")) {
@@ -54,6 +59,11 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
             bungee_getter.values().remove(ctx.channel());
             MasterServer.bungees--;
             MasterServer.getSocketIO().getSocket().emit("setBungees", MasterServer.bungees);
+            MasterServer.getJedis().set("bungees:" + finalData.getString("instance"), "REBOOTING");
+            JSONObject ijk = new JSONObject();
+            ijk.put("instance", finalData.getString("instance"));
+            ijk.put("status", "REBOOTING");
+            MasterServer.getSocketIO().getSocket().emit("statusProxy", finalData.toString());
             return;
         }
         if(command.equalsIgnoreCase("INS_UNREG")) {
@@ -80,13 +90,6 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
             MasterServer.getJedis().set("instances:" + finalData.getString("instance"), finalData.getString("status"));
             return;
         }
-        if(command.equalsIgnoreCase("PROXY_STATUS")) {
-            System.out.println("STATUS : " + finalData.getString("instance") + " : " + finalData.getString("status"));
-            MasterServer.getSocketIO().getSocket().emit("statusProxy", finalData.toString());
-            MasterServer.getJedis().set("bungees:" + finalData.getString("instance"), finalData.getString("status"));
-            return;
-        }
-
     }
 
     @Override
