@@ -43,7 +43,7 @@ public class MasterServerHandler extends ChannelHandlerAdapter {
             ijk.put("instance", finalData.getString("instance"));
             ijk.put("status", "RUNNING");
             MasterServer.getSocketIO().getSocket().emit("statusProxy", ijk.toString());
-            if(!bungee_getter.containsKey(finalData.getString("instance")))MasterServer.bungees++;
+            MasterServer.bungees++;
             return;
         }
         if(command.equalsIgnoreCase("INS_REG")) {
